@@ -7,6 +7,8 @@ from project.server.models import User
 
 auth_blueprint = Blueprint('auth', __name__)
 
+# Website found here https://cs519-assessment-heroku.herokuapp.com/
+
 
 class RegisterAPI(MethodView):
     """
