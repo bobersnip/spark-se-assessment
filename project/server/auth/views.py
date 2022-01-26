@@ -1,10 +1,12 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
+from flask_marshmallow import Marshmallow
 
 from project.server import bcrypt, db
 from project.server.models import User
 
 auth_blueprint = Blueprint('auth', __name__)
+
 
 class RegisterAPI(MethodView):
     """
@@ -20,7 +22,8 @@ class RegisterAPI(MethodView):
 
     def post(self):
         # get the post data
-        post_data = request.get_json(); print(request)
+        post_data = request.get_json()
+        print(request)
         # check if user already exists
         user = User.query.filter_by(email=post_data.get('email')).first()
         if not user:
@@ -35,11 +38,13 @@ class RegisterAPI(MethodView):
                 db.session.commit()
                 # generate the auth token
                 auth_token = user.encode_auth_token(user.id)
+                # print("auth token decoded")
                 responseObject = {
                     'status': 'success',
                     'message': 'Successfully registered.',
-                    'auth_token': auth_token.decode()
+                    'auth_token': auth_token
                 }
+                # print("response object made")
                 return make_response(jsonify(responseObject)), 201
             except Exception as e:
                 responseObject = {
@@ -62,5 +67,40 @@ registration_view = RegisterAPI.as_view('register_api')
 auth_blueprint.add_url_rule(
     '/auth/register',
     view_func=registration_view,
+    methods=['POST', 'GET']
+)
+
+##############    UserIndex     ##########################
+
+
+class UserAPI(MethodView):
+    """
+    User Index Resource
+    """
+
+    def get(self):
+        users = User.query.all()
+        user_list = []
+        for user in users:
+            user_list += [{"admin": user.admin, "email": user.email,
+                           "id": user.id, "registered_on": user.registered_on}]
+        # print(user_list)
+        return make_response(jsonify({"users": user_list})), 201
+
+    def post(self):
+        responseObject = {
+            'status': 'success',
+            'message': 'Request successful but please send an HTTP GET request to see users.'
+        }
+        return make_response(jsonify(responseObject)), 201
+
+
+# define the API resources
+user_index_view = UserAPI.as_view('user_index_api')
+
+# add Rules for API Endpoints
+auth_blueprint.add_url_rule(
+    '/users/index',
+    view_func=user_index_view,
     methods=['POST', 'GET']
 )
