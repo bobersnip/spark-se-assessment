@@ -1,6 +1,6 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
-postgres_local_base = 'postgresql://localhost/pre-registration'
+postgres_local_base = 'postgresql://localhost/diagnostic'
 database_name = 'diagnostic'
 
 
