@@ -1,6 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
 from flask.views import MethodView
-from flask_marshmallow import Marshmallow
 
 from project.server import bcrypt, db
 from project.server.models import User
