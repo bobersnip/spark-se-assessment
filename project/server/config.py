@@ -1,7 +1,7 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
-postgres_local_base = 'postgresql://postgres:test@127.0.0.1:5432/'
-database_name = 'diagnostic'
+postgres_local_base = 'postgres://lyachyeinkedbd:24cc61f7b19a296d17c3c75e40bb292d312902b2a5fd5442700fa16f69df8775@ec2-52-45-83-163.compute-1.amazonaws.com:5432/'
+database_name = 'd1b1n7i0kso0ch'
 
 
 class BaseConfig:
