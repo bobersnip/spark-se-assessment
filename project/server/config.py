@@ -1,6 +1,6 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
-postgres_local_base = 'postgresql://localhost/diagnostic'
+postgres_local_base = 'sqlite3://'
 database_name = 'diagnostic'
 
 
