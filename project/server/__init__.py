@@ -19,6 +19,9 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy import create_engine
+
+
 
 app = Flask(__name__)
 
@@ -33,6 +36,8 @@ db = SQLAlchemy(app)
 
 from project.server.models import User
 migrate = Migrate(app, db)
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+User.metadata.create_all(engine)
 
 @app.route("/")
 def root_site():
