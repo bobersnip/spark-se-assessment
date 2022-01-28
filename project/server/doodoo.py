@@ -1,3 +1,5 @@
+from project.server.auth.views import auth_blueprint
+from project.server.models import User
 import os
 import sys
 
@@ -19,6 +21,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+# from flask_heroku import Heroku
 
 app = Flask(__name__)
 
@@ -31,19 +34,20 @@ app.config.from_object(app_settings)
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 
-from project.server.models import User
 migrate = Migrate(app, db)
+
 
 @app.route("/")
 def root_site():
     return "<p>It works!</p>"
 
-from project.server.auth.views import auth_blueprint
+
 app.register_blueprint(auth_blueprint)
+
 
 @app.cli.command()
 @click.option('--coverage/--no-coverage', default=False,
-                help='Run tests under code coverage.')
+              help='Run tests under code coverage.')
 def test(coverage):
     """Run the unit tests."""
     if coverage and not os.environ.get('FLASK_COVERAGE'):
